@@ -57,16 +57,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function flipCard(card) {
-        if (lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
-
-        card.classList.add('flipped');
-        flippedCards.push(card);
-
-        if (flippedCards.length === 2) {
-            lockBoard = true;
-            checkForMatch();
-        }
+    if (lockBoard) return;
+    
+    // Se o card clicado já estiver virado e for o primeiro da seleção, desvira ele
+    if (flippedCards.length === 1 && flippedCards[0] === card) {
+        card.classList.remove('flipped');
+        flippedCards = [];
+        return;
     }
+
+    // Impede de virar um card já acertado ou já virado
+    if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+    card.classList.add('flipped');
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+        lockBoard = true;
+        checkForMatch();
+    }
+}
 
     function checkForMatch() {
         const [card1, card2] = flippedCards;
