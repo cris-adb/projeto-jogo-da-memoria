@@ -8,8 +8,8 @@ body {
     justify-content: center;
     min-height: 100vh;
     margin: 0;
-    padding: 20px; /* Adiciona padding geral em todos os lados */
-    box-sizing: border-box; /* Adicionando esta linha para evitar transbordamento */
+    padding: 20px;
+    box-sizing: border-box;
     overflow-x: hidden;
 }
 
@@ -20,14 +20,21 @@ header {
 
 h1 {
     color: #333;
-    font-size: 1.5em; /* Ajusta o tamanho do título para mobile */
+    font-size: 1.5em;
 }
 
 p {
     color: #666;
     max-width: 90%;
     margin: 0 auto 10px;
-    font-size: 0.9em; /* Ajusta o tamanho da fonte para mobile */
+    font-size: 0.9em;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .game-board {
@@ -40,21 +47,22 @@ p {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 1200px; /* Mantém a largura máxima para telas grandes */
+    max-width: 1200px;
     margin: 0 auto;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 .card {
     width: 100%;
     aspect-ratio: 1 / 1;
-    max-width: 120px; /* Mantém o tamanho máximo da carta */
+    max-width: 120px;
+    max-height: 120px;
     background-color: #4CAF50;
     border-radius: 8px;
     cursor: pointer;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.6s;
+    transition: transform 0.4s;
     box-sizing: border-box;
 }
 
@@ -97,16 +105,61 @@ p {
 
 .card.matched {
     cursor: default;
-    opacity: 0.5;
+    opacity: 1;
 }
 
 .card:not(.matched):hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-/* ### Media Queries para Tablets e Telas Maiores */
+/* Estilos para a tela de vitória */
+#win-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 10;
+}
 
-/* Tablet (landscape) */
+#win-screen.hidden {
+    display: none;
+}
+
+#win-screen h2 {
+    font-size: 3em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#win-screen p {
+    font-size: 1.5em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+#restart-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#restart-button:hover {
+    background-color: #45a049;
+}
+
+/* Media Queries */
 @media (min-width: 768px) {
     h1 {
         font-size: 2em;
@@ -118,7 +171,6 @@ p {
     }
 }
 
-/* Desktops e Telas Grandes */
 @media (min-width: 1024px) {
     h1 {
         font-size: 2.5em;

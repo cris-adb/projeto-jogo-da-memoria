@@ -1,41 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
     const gameBoard = document.querySelector('.game-board');
+    const winScreen = document.getElementById('win-screen');
+    const restartButton = document.getElementById('restart-button');
+    const gameContainer = document.querySelector('.game-container');
 
-    // Alfabeto completo
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    // Letras que serão GIFs
     const gifLetters = ['H', 'J', 'K', 'X', 'Z'];
-
-    // Crie as cartas para cada letra do alfabeto
-    const gameCards = alphabet.flatMap(letter => {
-        // Verifica se a letra atual está na lista de GIFs
-        const isGif = gifLetters.includes(letter);
-        const fileExtension = isGif ? 'gif' : 'png'; // Use .gif ou .png
-        
-        return [
-            { type: 'letter', content: letter },
-            { type: 'media', content: `media/${letter.toLowerCase()}.${fileExtension}` }
-        ];
-    });
-
-    // Função para embaralhar as cartas
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    shuffle(gameCards);
 
     let flippedCards = [];
     let lockBoard = false;
     let matchedPairs = 0;
 
-    function createCard(cardData) {
+    function createCards() {
+        const gameCards = alphabet.flatMap(letter => {
+            const isGif = gifLetters.includes(letter);
+            const fileExtension = isGif ? 'gif' : 'png';
+            
+            return [
+                { type: 'letter', value: letter, content: letter },
+                { type: 'media', value: letter, content: `media/${letter.toLowerCase()}.${fileExtension}` }
+            ];
+        });
+
+        shuffle(gameCards);
+        gameCards.forEach(cardData => {
+            const cardElement = createCardElement(cardData);
+            gameBoard.appendChild(cardElement);
+        });
+    }
+
+    function createCardElement(cardData) {
         const card = document.createElement('div');
         card.classList.add('card');
-        card.dataset.value = cardData.type === 'letter' ? cardData.content : cardData.content.charAt(6); // Pega a letra do nome do arquivo (ex: 'media/a.png')
+        card.dataset.value = cardData.value; // Usa o 'value' para a comparação
 
         const cardFront = document.createElement('div');
         cardFront.classList.add('card-face', 'card-front');
@@ -45,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const media = document.createElement('img');
             media.src = cardData.content;
-            media.alt = `Sinal de Libras para a letra ${cardData.content.charAt(6)}`;
+            media.alt = `Sinal de Libras para a letra ${cardData.value}`;
             cardFront.appendChild(media);
         }
 
@@ -56,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(cardBack);
 
         card.addEventListener('click', () => flipCard(card));
-
         return card;
     }
 
@@ -84,17 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function disableCards() {
-        flippedCards.forEach(card => {
-            card.classList.add('matched');
-        });
+    flippedCards.forEach(card => card.classList.add('matched'));
+    matchedPairs++;
 
-        matchedPairs++;
-        if (matchedPairs === gameCards.length / 2) {
-            setTimeout(() => alert('Parabéns! Você venceu o jogo!'), 500);
-        }
-
-        resetBoard();
+    if (matchedPairs === alphabet.length) {
+        setTimeout(() => showWinScreen(), 500);
     }
+
+    resetBoard();
+}
 
     function unflipCards() {
         setTimeout(() => {
@@ -107,9 +101,28 @@ document.addEventListener('DOMContentLoaded', () => {
         [flippedCards, lockBoard] = [[], false];
     }
 
-    // Inicializa o jogo
-    gameCards.forEach(cardData => {
-        const cardElement = createCard(cardData);
-        gameBoard.appendChild(cardElement);
-    });
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function showWinScreen() {
+        gameContainer.style.display = 'none'; // Esconde o tabuleiro
+        winScreen.classList.remove('hidden'); // Exibe a tela de vitória
+    }
+
+    function restartGame() {
+        gameBoard.innerHTML = ''; // Limpa o tabuleiro
+        matchedPairs = 0;
+        winScreen.classList.add('hidden'); // Esconde a tela de vitória
+        gameContainer.style.display = 'flex'; // Exibe o tabuleiro novamente
+        createCards(); // Cria um novo jogo
+    }
+
+    restartButton.addEventListener('click', restartGame);
+
+    // Inicia o jogo
+    createCards();
 });

@@ -8,12 +8,19 @@
 </head>
 <body>
 
-    <header>
-        <h1>Jogo da Memória de Libras</h1>
-        <p>Clique nas cartas para encontrar os pares de letras e seus GIFs ou Imagens em Libras!</p>
-    </header>
+    <div class="game-container">
+        <header>
+            <h1>Jogo da Memória de Libras</h1>
+            <p>Clique nas cartas para encontrar os pares de letras e suas imagens/gifs em Libras!</p>
+        </header>
+        <div class="game-board"></div>
+    </div>
 
-    <div class="game-board"></div>
+    <div id="win-screen" class="hidden">
+        <h2>Parabéns!</h2>
+        <p>Você completou o jogo da memória dos sinais em Libras!</p>
+        <button id="restart-button">Jogar Novamente</button>
+    </div>
 
     <script src="script.js"></script>
 
