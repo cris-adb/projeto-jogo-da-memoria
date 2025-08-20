@@ -1,99 +1,130 @@
+/* Estilos Base (Mobile-first) */
 body {
-    font-family: sans-serif;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f0f0f0;
+    justify-content: center;
+    min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    padding: 20px; /* Adiciona padding geral em todos os lados */
+    box-sizing: border-box; /* Adicionando esta linha para evitar transbordamento */
+    overflow-x: hidden;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 h1 {
     color: #333;
+    font-size: 1.5em; /* Ajusta o tamanho do título para mobile */
 }
 
-.game-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-    gap: 10px;
-    width: 600px;
+p {
+    color: #666;
     max-width: 90%;
-    margin-top: 20px;
+    margin: 0 auto 10px;
+    font-size: 0.9em; /* Ajusta o tamanho da fonte para mobile */
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px; /* Mantém a largura máxima para telas grandes */
+    margin: 0 auto;
+    box-sizing: border-box; 
 }
 
 .card {
-    background-color: #ddd;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 150px;
-    cursor: pointer;
-    perspective: 1000px;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-    user-select: none;
-}
-
-.card-inner {
-    position: relative;
     width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s;
+    aspect-ratio: 1 / 1;
+    max-width: 120px; /* Mantém o tamanho máximo da carta */
+    background-color: #4CAF50;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
     transform-style: preserve-3d;
+    transition: transform 0.6s;
+    box-sizing: border-box;
 }
 
-.card.flipped .card-inner {
+.card.flipped {
     transform: rotateY(180deg);
 }
 
-.card-face {
+.card .card-face {
     position: absolute;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
     display: flex;
-    justify-content: center;
     align-items: center;
-    border-radius: 8px;
+    justify-content: center;
     font-size: 2em;
     font-weight: bold;
-    color: #444;
+    color: #fff;
+    border-radius: 8px;
+    text-transform: uppercase;
 }
 
-.card-back {
-    background-color: #4CAF50; /* Cor da parte de trás da carta */
-    color: white;
-    transform: rotateY(0deg);
+.card .card-back {
+    background-color: #4CAF50;
 }
 
-.card-front {
-    background-color: white;
+.card .card-front {
+    background-color: #e9e9e9;
+    color: #333;
     transform: rotateY(180deg);
+    padding: 5px;
 }
 
-.card-front img {
+.card .card-front img {
     max-width: 100%;
     max-height: 100%;
     border-radius: 8px;
+    display: block;
 }
 
-.card.matched .card-inner {
-    background-color: #88cc88;
+.card.matched {
     cursor: default;
-    box-shadow: 0 0 10px #88cc88;
+    opacity: 0.5;
 }
 
-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    border: none;
-    background-color: #333;
-    color: white;
-    border-radius: 5px;
+.card:not(.matched):hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ### Media Queries para Tablets e Telas Maiores */
+
+/* Tablet (landscape) */
+@media (min-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+    .game-board {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 15px;
+        padding: 20px;
+    }
+}
+
+/* Desktops e Telas Grandes */
+@media (min-width: 1024px) {
+    h1 {
+        font-size: 2.5em;
+    }
+    .game-board {
+        grid-template-columns: repeat(13, 1fr);
+        gap: 20px;
+    }
 }
